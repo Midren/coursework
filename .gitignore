@@ -1,0 +1,9 @@
+examples/EpubTest/*.iml
+examples/EpubTest/.gradle
+examples/EpubTest/local.properties
+examples/EpubTest/.idea/workspace.xml
+examples/EpubTest/.idea/libraries
+examples/EpubTest/.DS_Store
+examples/EpubTest/build
+examples/EpubTest/captures
+examples/EpubTest/.externalNativeBuild

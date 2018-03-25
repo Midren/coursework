@@ -11,7 +11,7 @@ Ooops... Hard to installate something that is not done yet
 Ooops... Wait a few months
 ```
 ## Contributing
-- Fork it (https://github.com/yourname/yourproject/fork)
+- Fork it (https://github.com/Momka45/coursework/fork)
 - Create your feature branch (git checkout -b feature/fooBar)
 - Commit your changes (git commit -am 'Add some fooBar')
 - Push to the branch (git push origin feature/fooBar)

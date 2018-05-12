@@ -1,0 +1,23 @@
+{
+  "senses": {
+    "idiom_sense": null, 
+    "word_sense": {
+      "category": "Adjective", 
+      "definitions": [
+        {
+          "definition": "beyond or deviating from the usual or expected", 
+          "example": "a curious hybrid accent"
+        }, 
+        {
+          "definition": "not used up", 
+          "example": "leftover meatloaf"
+        }, 
+        {
+          "definition": "not easily explained", 
+          "example": "it is odd that his name is never mentioned"
+        }
+      ]
+    }
+  }, 
+  "word": "odd"
+}

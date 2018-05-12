@@ -1,0 +1,36 @@
+{
+  "senses": {
+    "idiom_sense": {
+      "category": "Idiomatic phrase", 
+      "definitions": [
+        {
+          "definition": "End nicely", 
+          "example": "Things were going wrong for them but fortunately it all WORKED OUT in the end."
+        }, 
+        {
+          "definition": "Find the answer or solution", 
+          "example": "I couldn't WORK OUT all the answers to the crossword puzzle."
+        }
+      ], 
+      "idiom_name": "work out"
+    }, 
+    "word_sense": {
+      "category": "Verb", 
+      "definitions": [
+        {
+          "definition": "operate in a certain place, area, or specialty", 
+          "example": "She works the night clubs"
+        }, 
+        {
+          "definition": "move in an agitated manner", 
+          "example": "His fingers worked with tension"
+        }, 
+        {
+          "definition": "cause to happen or to occur as a consequence", 
+          "example": "I cannot work a miracle"
+        }
+      ]
+    }
+  }, 
+  "word": "work"
+}

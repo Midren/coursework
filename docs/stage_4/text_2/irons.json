@@ -1,0 +1,29 @@
+{
+  "senses": {
+    "idiom_sense": {
+      "category": "Idiomatic phrase", 
+      "definitions": [
+        {
+          "definition": "this means juggling too many projects at once and something's bound to fail; when a smith had too many irons in his fire, he couldn't effectively keep track of all of them.", 
+          "example": ""
+        }
+      ], 
+      "idiom_name": "too many irons in the fire"
+    }, 
+    "word_sense": {
+      "category": "Noun", 
+      "definitions": [
+        {
+          "definition": "implement used to brand live stock"
+        }, 
+        {
+          "definition": "home appliance consisting of a flat metal base that is heated and used to smooth cloth"
+        }, 
+        {
+          "definition": "a golf club that has a relatively narrow metal head"
+        }
+      ]
+    }
+  }, 
+  "word": "iron"
+}

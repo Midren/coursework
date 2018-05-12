@@ -1,0 +1,26 @@
+{
+  "senses": {
+    "idiom_sense": {
+      "category": "Idiomatic phrase", 
+      "definitions": [
+        {
+          "definition": "if you are as busy as a bee, you are very busy indeed.", 
+          "example": ""
+        }
+      ], 
+      "idiom_name": "busy as a bee"
+    }, 
+    "word_sense": {
+      "category": "Noun", 
+      "definitions": [
+        {
+          "definition": "a social gathering to carry out some communal task or to hold competitions"
+        }, 
+        {
+          "definition": "any of numerous hairy-bodied insects including social and solitary species"
+        }
+      ]
+    }
+  }, 
+  "word": "bee"
+}

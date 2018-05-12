@@ -1,0 +1,32 @@
+{
+  "senses": {
+    "idiom_sense": {
+      "category": "Idiomatic phrase", 
+      "definitions": [
+        {
+          "definition": "if someone is on the gravy train, they have found and easy way to make lots of money.", 
+          "example": ""
+        }
+      ], 
+      "idiom_name": "gravy train"
+    }, 
+    "word_sense": {
+      "category": "Noun", 
+      "definitions": [
+        {
+          "definition": "a sequentially ordered set of things or events or ideas in which each successive member is related to the preceding", 
+          "example": "a string of islands"
+        }, 
+        {
+          "definition": "a series of consequences wrought by an event", 
+          "example": "it led to a train of disasters"
+        }, 
+        {
+          "definition": "piece of cloth forming the long back section of a gown that is drawn along the floor", 
+          "example": "the bride's train was carried by her two young nephews"
+        }
+      ]
+    }
+  }, 
+  "word": "train"
+}

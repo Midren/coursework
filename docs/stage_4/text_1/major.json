@@ -1,0 +1,23 @@
+{
+  "senses": {
+    "idiom_sense": null, 
+    "word_sense": {
+      "category": "Adjective", 
+      "definitions": [
+        {
+          "definition": "greater in scope or effect", 
+          "example": "a major contribution"
+        }, 
+        {
+          "definition": "greater in number or size or amount", 
+          "example": "a major portion (a majority) of the population"
+        }, 
+        {
+          "definition": "of the field of academic study in which one concentrates or specializes", 
+          "example": "his major field was mathematics"
+        }
+      ]
+    }
+  }, 
+  "word": "major"
+}

@@ -1,0 +1,23 @@
+{
+  "senses": {
+    "idiom_sense": null, 
+    "word_sense": {
+      "category": "Adverb", 
+      "definitions": [
+        {
+          "definition": "at or to or from a great distance in space", 
+          "example": "he traveled far"
+        }, 
+        {
+          "definition": "at or to a certain point or degree", 
+          "example": "I can only go so far before I have to give up"
+        }, 
+        {
+          "definition": "remote in time", 
+          "example": "if we could see far into the future"
+        }
+      ]
+    }
+  }, 
+  "word": "far"
+}

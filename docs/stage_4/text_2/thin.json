@@ -1,0 +1,32 @@
+{
+  "senses": {
+    "idiom_sense": {
+      "category": "Idiomatic phrase", 
+      "definitions": [
+        {
+          "definition": "if you spread youself too thin, you overextend yourself and\u00a0take on too many things to deal with them properly.", 
+          "example": ""
+        }
+      ], 
+      "idiom_name": "spread yourself too thin"
+    }, 
+    "word_sense": {
+      "category": "Adjective", 
+      "definitions": [
+        {
+          "definition": "lacking substance or significance; a fragile claim to fame\"", 
+          "example": "slight evidence"
+        }, 
+        {
+          "definition": "very narrow", 
+          "example": "a thin line across the page"
+        }, 
+        {
+          "definition": "not dense", 
+          "example": "a thin beard"
+        }
+      ]
+    }
+  }, 
+  "word": "thin"
+}

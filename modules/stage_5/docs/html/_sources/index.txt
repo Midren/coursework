@@ -1,0 +1,49 @@
+.. Ebook documentation master file, created by
+   sphinx-quickstart on Fri May 25 04:03:04 2018.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to Ebook's documentation!
+=================================
+
+
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+.. automodule:: graph_word_wsd
+    :members:
+    :undoc-members:
+
+---------------------------------
+
+.. automodule:: auxiliar_functions
+    :members:
+    :undoc-members:
+
+---------------------------------
+
+.. automodule:: idiom_processing
+    :members:
+    :undoc-members:
+
+---------------------------------
+
+.. automodule:: idiom_senses
+    :members:
+    :undoc-members:
+
+---------------------------------
+
+.. automodule:: definitions
+    :members:
+    :undoc-members:
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

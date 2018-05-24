@@ -1,0 +1,237 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>auxiliar_functions &#8212; Ebook 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for auxiliar_functions</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">nltk.stem</span> <span class="k">import</span> <span class="n">WordNetLemmatizer</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="k">import</span> <span class="n">wordnet</span> <span class="k">as</span> <span class="n">wn</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="k">import</span> <span class="n">stopwords</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">string</span> <span class="k">import</span> <span class="n">punctuation</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+
+
+<div class="viewcode-block" id="get_pos_tokens_dict"><a class="viewcode-back" href="../index.html#auxiliar_functions.get_pos_tokens_dict">[docs]</a><span class="k">def</span> <span class="nf">get_pos_tokens_dict</span><span class="p">(</span><span class="n">sentence</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (str) -&gt; dict.</span>
+
+<span class="sd">    Return dictionary, where key is word and value</span>
+<span class="sd">    is list with Part-Of-Speech tags, index of tag in list</span>
+<span class="sd">    is order of occurrence</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tokenized_sen</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">tokens_lst</span> <span class="o">=</span> <span class="n">get_pos_tokens_list</span><span class="p">(</span><span class="n">tokenized_sen</span><span class="p">)</span>
+    <span class="n">tokens_dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">word_class</span> <span class="ow">in</span> <span class="n">tokens_lst</span><span class="p">:</span>
+        <span class="n">tokens_dict</span><span class="p">[</span><span class="n">word</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word_class</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tokens_dict</span></div>
+
+
+<div class="viewcode-block" id="get_pos_tokens_list"><a class="viewcode-back" href="../index.html#auxiliar_functions.get_pos_tokens_list">[docs]</a><span class="k">def</span> <span class="nf">get_pos_tokens_list</span><span class="p">(</span><span class="n">tokenized_sen</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (list) -&gt; list.</span>
+
+<span class="sd">    Return list of part-of-speech tags for tokenized sentence.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">nltk</span><span class="o">.</span><span class="n">pos_tag</span><span class="p">(</span><span class="n">tokenized_sen</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_lemmatized_sen"><a class="viewcode-back" href="../index.html#auxiliar_functions.get_lemmatized_sen">[docs]</a><span class="k">def</span> <span class="nf">get_lemmatized_sen</span><span class="p">(</span><span class="n">sentence</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (str) -&gt; list.</span>
+
+<span class="sd">    Return list of lemmatized words of this sentence.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tokenized_sen</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">tokens_dict</span> <span class="o">=</span> <span class="n">get_pos_tokens_dict</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">lemmatized_sen</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">tokenized_sen</span><span class="p">:</span>
+        <span class="n">lemmatized_sen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">tokens_dict</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;-–&quot;</span><span class="p">))</span>
+        <span class="k">del</span> <span class="n">tokens_dict</span><span class="p">[</span><span class="n">word</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">lemmatized_sen</span></div>
+
+
+<div class="viewcode-block" id="lemmatize_word"><a class="viewcode-back" href="../index.html#auxiliar_functions.lemmatize_word">[docs]</a><span class="k">def</span> <span class="nf">lemmatize_word</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (str, str, int) -&gt; str.</span>
+
+<span class="sd">    Return lemmatized word.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tokens_dict</span> <span class="o">=</span> <span class="n">get_pos_tokens_dict</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lemmatize</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">tokens_dict</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_pos_wn"><a class="viewcode-back" href="../index.html#auxiliar_functions.get_pos_wn">[docs]</a><span class="k">def</span> <span class="nf">get_pos_wn</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">tokens_dict</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (str, dict, int) -&gt; str.</span>
+
+<span class="sd">    Return part-of-speech of word in WordNet&#39;s representation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">word_class</span> <span class="o">=</span> <span class="n">tokens_dict</span><span class="p">[</span><span class="n">word</span><span class="p">][</span><span class="n">order</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">word_class</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;NN&#39;</span><span class="p">,</span> <span class="s1">&#39;NNS&#39;</span><span class="p">,</span> <span class="s1">&#39;NNP&#39;</span><span class="p">,</span> <span class="s1">&#39;NNPS&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">wn</span><span class="o">.</span><span class="n">NOUN</span>
+    <span class="k">elif</span> <span class="n">word_class</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;VB&#39;</span><span class="p">,</span> <span class="s1">&#39;VBD&#39;</span><span class="p">,</span> <span class="s1">&#39;VBG&#39;</span><span class="p">,</span> <span class="s1">&#39;VBN&#39;</span><span class="p">,</span> <span class="s1">&#39;VBP&#39;</span><span class="p">,</span> <span class="s1">&#39;VBZ&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">wn</span><span class="o">.</span><span class="n">VERB</span>
+    <span class="k">elif</span> <span class="n">word_class</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;RB&#39;</span><span class="p">,</span> <span class="s1">&#39;RBR&#39;</span><span class="p">,</span> <span class="s1">&#39;RBS&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">wn</span><span class="o">.</span><span class="n">ADV</span>
+    <span class="k">elif</span> <span class="n">word_class</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;JJ&#39;</span><span class="p">,</span> <span class="s1">&#39;JJR&#39;</span><span class="p">,</span> <span class="s1">&#39;JJS&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">wn</span><span class="o">.</span><span class="n">ADJ</span></div>
+
+
+<div class="viewcode-block" id="simple_wn_2_oxf"><a class="viewcode-back" href="../index.html#auxiliar_functions.simple_wn_2_oxf">[docs]</a><span class="k">def</span> <span class="nf">simple_wn_2_oxf</span><span class="p">(</span><span class="n">wn_class</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (str) -&gt; str.</span>
+
+<span class="sd">    Return part-of-speech in Oxford&#39;s representation from WordNet&#39;s that is</span>
+<span class="sd">    two charachters long.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">wn_2_oxf</span> <span class="o">=</span> <span class="p">{</span><span class="n">wn</span><span class="o">.</span><span class="n">ADJ</span><span class="p">:</span> <span class="s2">&quot;Adjective&quot;</span><span class="p">,</span> <span class="n">wn</span><span class="o">.</span><span class="n">ADV</span><span class="p">:</span> <span class="s2">&quot;Adverb&quot;</span><span class="p">,</span> <span class="n">wn</span><span class="o">.</span><span class="n">NOUN</span><span class="p">:</span> <span class="s2">&quot;Noun&quot;</span><span class="p">,</span>
+                <span class="n">wn</span><span class="o">.</span><span class="n">VERB</span><span class="p">:</span> <span class="s2">&quot;Verb&quot;</span><span class="p">,</span> <span class="n">wn</span><span class="o">.</span><span class="n">ADJ_SAT</span><span class="p">:</span> <span class="s2">&quot;Adjective&quot;</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">wn_2_oxf</span><span class="p">[</span><span class="n">wn_class</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="wn_2_oxf"><a class="viewcode-back" href="../index.html#auxiliar_functions.wn_2_oxf">[docs]</a><span class="k">def</span> <span class="nf">wn_2_oxf</span><span class="p">(</span><span class="n">wn_class</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (str) -&gt; str.</span>
+
+<span class="sd">    Return WordNet&#39;s representation of part-of-speech from Oxford&#39;s.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">wn_2_oxf</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;JJ&quot;</span><span class="p">:</span> <span class="s2">&quot;Adjective&quot;</span><span class="p">,</span> <span class="s2">&quot;RB&quot;</span><span class="p">:</span> <span class="s2">&quot;Adverb&quot;</span><span class="p">,</span> <span class="s2">&quot;CC&quot;</span><span class="p">:</span> <span class="s2">&quot;Conjuction&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;DT&quot;</span><span class="p">:</span> <span class="s2">&quot;Determiner&quot;</span><span class="p">,</span> <span class="s2">&quot;UH&quot;</span><span class="p">:</span> <span class="s2">&quot;Interjection&quot;</span><span class="p">,</span> <span class="s2">&quot;NN&quot;</span><span class="p">:</span> <span class="s2">&quot;Noun&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;CD&quot;</span><span class="p">:</span> <span class="s2">&quot;Numeral&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">:</span> <span class="s2">&quot;Preposition&quot;</span><span class="p">,</span> <span class="s2">&quot;PRP&quot;</span><span class="p">:</span> <span class="s2">&quot;Pronoun&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;VB&quot;</span><span class="p">:</span> <span class="s2">&quot;Verb&quot;</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">wn_2_oxf</span><span class="p">[</span><span class="n">wn_class</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="oxf_2_wn"><a class="viewcode-back" href="../index.html#auxiliar_functions.oxf_2_wn">[docs]</a><span class="k">def</span> <span class="nf">oxf_2_wn</span><span class="p">(</span><span class="n">oxf_class</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (str) -&gt; str.</span>
+
+<span class="sd">    Return lexical category in WordNet form from</span>
+<span class="sd">    lexical category from Oxford API.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">oxf_2_wn</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Adjective&quot;</span><span class="p">:</span> <span class="s2">&quot;JJ&quot;</span><span class="p">,</span> <span class="s2">&quot;Adverb&quot;</span><span class="p">:</span> <span class="s2">&quot;RB&quot;</span><span class="p">,</span> <span class="s2">&quot;Conjuction&quot;</span><span class="p">:</span> <span class="s2">&quot;CC&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Determiner&quot;</span><span class="p">:</span> <span class="s2">&quot;DT&quot;</span><span class="p">,</span> <span class="s2">&quot;Idiomatic&quot;</span><span class="p">:</span> <span class="s2">&quot;Idiomatic&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Interjection&quot;</span><span class="p">:</span> <span class="s2">&quot;UH&quot;</span><span class="p">,</span> <span class="s2">&quot;Noun&quot;</span><span class="p">:</span> <span class="s2">&quot;NN&quot;</span><span class="p">,</span> <span class="s2">&quot;Numeral&quot;</span><span class="p">:</span> <span class="s2">&quot;CD&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Other&quot;</span><span class="p">:</span> <span class="s2">&quot;Other&quot;</span><span class="p">,</span> <span class="s2">&quot;Prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;Prefix&quot;</span><span class="p">,</span> <span class="s2">&quot;Preposition&quot;</span><span class="p">:</span> <span class="s2">&quot;IN&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Pronoun&quot;</span><span class="p">:</span> <span class="s2">&quot;PRP&quot;</span><span class="p">,</span> <span class="s2">&quot;Suffix&quot;</span><span class="p">:</span> <span class="s2">&quot;Suffix&quot;</span><span class="p">,</span> <span class="s2">&quot;Verb&quot;</span><span class="p">:</span> <span class="s2">&quot;VB&quot;</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">oxf_2_wn</span><span class="p">[</span><span class="n">oxf_class</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="lemmatize"><a class="viewcode-back" href="../index.html#auxiliar_functions.lemmatize">[docs]</a><span class="k">def</span> <span class="nf">lemmatize</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">tokens_dict</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (str, dict, int) -&gt; str.</span>
+
+<span class="sd">    Return lemmatized word using dict of tokens and order of word in</span>
+<span class="sd">    sentence.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pos_tag</span> <span class="o">=</span> <span class="n">get_pos_wn</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">tokens_dict</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pos_tag</span><span class="p">:</span>
+        <span class="n">poss_lemm</span> <span class="o">=</span> <span class="n">wn</span><span class="o">.</span><span class="n">_morphy</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">pos_tag</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">poss_lemm</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">poss_lemm</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">poss_lemm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tokens_dict</span><span class="p">[</span><span class="n">word</span><span class="p">][</span><span class="n">order</span><span class="p">]</span> <span class="ow">in</span> <span class="s2">&quot;VBD VBN&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">poss_lemm</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">w</span> <span class="o">!=</span> <span class="n">word</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">w</span>
+    <span class="n">wordnet_lemmatizer</span> <span class="o">=</span> <span class="n">WordNetLemmatizer</span><span class="p">()</span>
+    <span class="n">lemmatized</span> <span class="o">=</span> <span class="n">wordnet_lemmatizer</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lemmatized</span></div>
+
+
+<div class="viewcode-block" id="get_sen_lemmas_set"><a class="viewcode-back" href="../index.html#auxiliar_functions.get_sen_lemmas_set">[docs]</a><span class="k">def</span> <span class="nf">get_sen_lemmas_set</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">word</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">word_order</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (str, str, int) -&gt; set.</span>
+
+<span class="sd">    Return set of lemmas of words in this sentence.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tokens_dict</span> <span class="o">=</span> <span class="n">get_pos_tokens_dict</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">lemmas_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">order</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tokens_dict</span><span class="p">[</span><span class="n">token</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">token</span> <span class="ow">in</span> <span class="n">punctuation</span> <span class="ow">or</span> <span class="p">(</span>
+                    <span class="n">token</span> <span class="ow">in</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s2">&quot;english&quot;</span><span class="p">)))</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="n">word</span><span class="p">:</span>
+                <span class="n">lemma</span> <span class="o">=</span> <span class="n">lemmatize</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">tokens_dict</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+                <span class="n">lemmas_set</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">lemma</span><span class="p">,</span> <span class="n">get_pos_wn</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">tokens_dict</span><span class="p">,</span> <span class="n">order</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="n">word</span><span class="p">:</span>
+        <span class="n">word_lemma</span> <span class="o">=</span> <span class="n">lemmatize</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">tokens_dict</span><span class="p">,</span> <span class="n">word_order</span><span class="p">)</span>
+        <span class="n">word_pos</span> <span class="o">=</span> <span class="n">get_pos_wn</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">tokens_dict</span><span class="p">,</span> <span class="n">word_order</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">lemmas_set</span><span class="p">,</span> <span class="p">(</span><span class="n">word_lemma</span><span class="p">,</span> <span class="n">word_pos</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lemmas_set</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Roman Milishchuk.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

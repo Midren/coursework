@@ -1,0 +1,275 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>idiom_processing &#8212; Ebook 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for idiom_processing</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="n">pprint</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">auxiliar_functions</span> <span class="k">as</span> <span class="nn">af</span>
+
+
+<div class="viewcode-block" id="IdiomExpression"><a class="viewcode-back" href="../index.html#idiom_processing.IdiomExpression">[docs]</a><span class="k">class</span> <span class="nc">IdiomExpression</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;This class represents idiom expression.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">,</span> <span class="n">example</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize idiom expression with name, definition and example.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lemmatized</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">get_lemmatized_sen</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">definition</span> <span class="o">=</span> <span class="n">definition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">example</span> <span class="o">=</span> <span class="n">example</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">=</span> <span class="n">kind</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Represent idiom in repr form.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;Idiom: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">definition</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span>\
+            <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">+</span> <span class="s2">&quot;&gt;&quot;</span>
+
+<div class="viewcode-block" id="IdiomExpression.check_sentence"><a class="viewcode-back" href="../index.html#idiom_processing.IdiomExpression.check_sentence">[docs]</a>    <span class="k">def</span> <span class="nf">check_sentence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lemmatized_sen</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        (self, list) -&gt; tuple.</span>
+
+<span class="sd">        Check sentence if it has idiom expression.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;inseparable&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;intransitive&quot;</span><span class="p">:</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_inseparable</span><span class="p">(</span><span class="n">lemmatized_sen</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;separable [optional]&quot;</span><span class="p">:</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_inseparable</span><span class="p">(</span><span class="n">lemmatized_sen</span><span class="p">)</span> <span class="ow">or</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_check_separable</span><span class="p">(</span><span class="n">lemmatized_sen</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;separable [obligatory]&quot;</span><span class="p">:</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_separable</span><span class="p">(</span><span class="n">lemmatized_sen</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">answer</span> <span class="ow">and</span> <span class="n">answer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">answer</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">answer</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="n">answer</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lemmatized</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)])</span>
+        <span class="k">elif</span> <span class="n">answer</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">answer</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="n">answer</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">i</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lemmatized</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)])</span></div>
+
+    <span class="k">def</span> <span class="nf">_check_inseparable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lemmatized_sen</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        (self, list) -&gt; int, int.</span>
+
+<span class="sd">        Check sentence if it has an inseparable idiom expression.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">while</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">st</span> <span class="o">=</span> <span class="n">st</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">lemmatized_sen</span><span class="p">[</span><span class="n">st</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lemmatized</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">replacing_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;you&quot;</span><span class="p">,</span> <span class="s2">&quot;your&quot;</span><span class="p">,</span> <span class="s2">&quot;someone&quot;</span><span class="p">,</span> <span class="s2">&quot;something&quot;</span><span class="p">,</span>
+                                       <span class="s2">&quot;somebody&quot;</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">st</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lemmatized</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lemmatized</span><span class="p">[</span><span class="n">word</span> <span class="o">-</span> <span class="n">st</span><span class="p">]</span> <span class="ow">in</span> <span class="n">replacing_words</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="k">if</span> <span class="n">lemmatized_sen</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lemmatized</span><span class="p">[</span><span class="n">word</span> <span class="o">-</span> <span class="n">st</span><span class="p">]:</span>
+                        <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">st</span><span class="p">,</span> <span class="n">st</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="k">break</span>
+
+    <span class="k">def</span> <span class="nf">_check_separable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lemmatized_sen</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        (self, list) -&gt; int, int.</span>
+
+<span class="sd">        Check sentence if it has an separable idiom expression.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fst</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">while</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">fst</span> <span class="o">=</span> <span class="n">fst</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> \
+                    <span class="n">lemmatized_sen</span><span class="p">[</span><span class="n">fst</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lemmatized</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">snd</span> <span class="o">=</span> <span class="n">fst</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> \
+                    <span class="n">lemmatized_sen</span><span class="p">[</span><span class="n">fst</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lemmatized</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">snd</span> <span class="o">-</span> <span class="n">fst</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="ow">or</span> <span class="n">snd</span> <span class="o">-</span> <span class="n">fst</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lemmatized</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="n">lemmatized_sen</span><span class="p">[</span><span class="n">snd</span> <span class="o">+</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lemmatized</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                        <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">af</span><span class="o">.</span><span class="n">get_pos_tokens_list</span><span class="p">(</span><span class="n">lemmatized_sen</span><span class="p">[</span>
+                            <span class="n">fst</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">snd</span><span class="p">]):</span>
+                        <span class="k">if</span> <span class="n">token</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;VB&quot;</span> <span class="ow">or</span> <span class="n">token</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="kc">False</span>
+                    <span class="k">return</span> <span class="n">fst</span><span class="p">,</span> <span class="n">snd</span></div>
+
+
+<div class="viewcode-block" id="IdiomDict"><a class="viewcode-back" href="../index.html#idiom_processing.IdiomDict">[docs]</a><span class="k">class</span> <span class="nc">IdiomDict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Represents dictionary of idioms.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize class with empty dict.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idioms</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IdiomDict.add_idiom"><a class="viewcode-back" href="../index.html#idiom_processing.IdiomDict.add_idiom">[docs]</a>    <span class="k">def</span> <span class="nf">add_idiom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idiom</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        (self, IdiomExpression) -&gt; None.</span>
+
+<span class="sd">        Add idiom to dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idioms</span><span class="p">[</span><span class="n">idiom</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idiom</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        (self, IdiomExpression) -&gt; None.</span>
+
+<span class="sd">        Return idiom by idiom&#39;s name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">idioms</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        (self) -&gt; int.</span>
+
+<span class="sd">        Return count of elements in dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">idioms</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        (self) -&gt; iter.</span>
+
+<span class="sd">        Return iterator for the elements of dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">idioms</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="IdiomDict.find_idioms"><a class="viewcode-back" href="../index.html#idiom_processing.IdiomDict.find_idioms">[docs]</a>    <span class="k">def</span> <span class="nf">find_idioms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lemmatized_sen</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        (self, list) -&gt; defaultdict.</span>
+
+<span class="sd">        Return idioms that are in lemmatized sentence.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">idioms</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">idiom</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">exp</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="n">idiom</span><span class="p">]:</span>
+                <span class="n">index_list</span> <span class="o">=</span> <span class="n">exp</span><span class="o">.</span><span class="n">check_sentence</span><span class="p">(</span><span class="n">lemmatized_sen</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">index_list</span><span class="p">:</span>
+                    <span class="n">idioms</span><span class="p">[</span><span class="n">index_list</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">idioms</span></div></div>
+
+
+<div class="viewcode-block" id="get_all_idioms_dict"><a class="viewcode-back" href="../index.html#idiom_processing.get_all_idioms_dict">[docs]</a><span class="k">def</span> <span class="nf">get_all_idioms_dict</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (None) -&gt; IdiomDict.</span>
+
+<span class="sd">    Return dictionary with all idioms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">idioms</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;expressions.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="n">idiom_dict</span> <span class="o">=</span> <span class="n">IdiomDict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">idiom</span> <span class="ow">in</span> <span class="n">idioms</span><span class="p">:</span>
+        <span class="n">idiom_dict</span><span class="o">.</span><span class="n">add_idiom</span><span class="p">(</span><span class="n">IdiomExpression</span><span class="p">(</span><span class="n">idiom</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                                             <span class="n">idiom</span><span class="p">[</span><span class="s2">&quot;definition&quot;</span><span class="p">],</span>
+                                             <span class="n">idiom</span><span class="p">[</span><span class="s2">&quot;example&quot;</span><span class="p">],</span>
+                                             <span class="n">idiom</span><span class="p">[</span><span class="s2">&quot;kind&quot;</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">idiom_dict</span></div>
+
+
+<div class="viewcode-block" id="get_idiom"><a class="viewcode-back" href="../index.html#idiom_processing.get_idiom">[docs]</a><span class="k">def</span> <span class="nf">get_idiom</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">word_order</span><span class="p">,</span> <span class="n">idiom_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (str, str, int, IdiomDict) -&gt; str, str, list.</span>
+
+<span class="sd">    Return idiom if word is part of it or None either.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">idiom_dict</span><span class="p">:</span>
+        <span class="n">idiom_dict</span> <span class="o">=</span> <span class="n">get_all_idioms_dict</span><span class="p">()</span>
+    <span class="n">lemmatized_sen</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">get_lemmatized_sen</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">lemma</span> <span class="o">=</span> <span class="n">af</span><span class="o">.</span><span class="n">lemmatize_word</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">word_order</span><span class="p">)</span>
+    <span class="n">current_ord</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lemmatized_sen</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">word</span> <span class="o">==</span> <span class="n">lemma</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">current_ord</span> <span class="o">==</span> <span class="n">word_order</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">current_ord</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">possible_idioms</span> <span class="o">=</span> <span class="n">idiom_dict</span><span class="o">.</span><span class="n">find_idioms</span><span class="p">(</span><span class="n">lemmatized_sen</span><span class="p">)</span>
+    <span class="n">idioms_num</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">x</span><span class="p">,</span> <span class="n">possible_idioms</span><span class="p">))</span>
+    <span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="n">idioms_num</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idioms_num</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">idioms_num</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">idioms</span> <span class="o">=</span> <span class="n">possible_idioms</span><span class="p">[</span><span class="n">idioms_num</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="n">idioms_def_example</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;definition&quot;</span><span class="p">:</span> <span class="n">idiom</span><span class="o">.</span><span class="n">definition</span><span class="p">,</span>
+                           <span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="n">idiom</span><span class="o">.</span><span class="n">example</span><span class="p">}</span> <span class="k">for</span> <span class="n">idiom</span> <span class="ow">in</span> <span class="n">idioms</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">idioms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;Idiomatic phrase&quot;</span><span class="p">,</span> <span class="n">idioms_def_example</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">sentence</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Maybe it&#39;s vice versa&quot;&quot;&quot;</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">pprint</span><span class="p">(</span><span class="n">get_idiom</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="s2">&quot;versa&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Roman Milishchuk.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
